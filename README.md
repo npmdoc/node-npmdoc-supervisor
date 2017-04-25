@@ -1,4 +1,7 @@
-# api documentation for  [supervisor (v0.12.0)](https://github.com/petruisfan/node-supervisor/)  [![npm package](https://img.shields.io/npm/v/npmdoc-supervisor.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-supervisor) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-supervisor.svg)](https://travis-ci.org/npmdoc/node-npmdoc-supervisor)
+# npmdoc-supervisor
+
+#### basic api documentation for  [supervisor (v0.12.0)](https://github.com/petruisfan/node-supervisor/)  [![npm package](https://img.shields.io/npm/v/npmdoc-supervisor.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-supervisor) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-supervisor.svg)](https://travis-ci.org/npmdoc/node-npmdoc-supervisor)
+
 #### A supervisor program for running nodejs programs
 
 [![NPM](https://nodei.co/npm/supervisor.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/supervisor)
