@@ -72,19 +72,6 @@
 
     </ol></li>
 
-    <li class="apidocModuleLi"><a href="#apidoc.module.supervisor.run">module supervisor.run</a><ol>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.supervisor.run.run">
-            function <span class="apidocSignatureSpan">supervisor.</span>run
-            <span class="apidocSignatureSpan">(args)</span>
-            </a>
-
-        </li>
-
-    </ol></li>
-
 </ol></div>
 
 <div class="apidocSectionDiv">
@@ -207,133 +194,16 @@
     }
     if (executor === &#x22;coffee&#x22; &#x26;&#x26; (debugFlag || debugBrkFlag)) {
         // coffee does not understand debug or debug-brk, make coffee pass opti ...</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
-    </ul>
+    <li>example usage<pre class="apidocCodePre">...
 
+var arg, base;
+do arg = args.shift();
+while ( fs.realpathSync(arg) !== __filename
+  &#x26;&#x26; !(base = path.basename(arg)).match(/^supervisor$|^supervisor.js$|^node-supervisor$/)
+)
 
-</div>
-
-<div class="apidocSectionDiv">
-<h1><a href="#apidoc.module.supervisor.run" id="apidoc.module.supervisor.run">module supervisor.run</a></h1>
-
-
-    <h2>
-        <a href="#apidoc.element.supervisor.run.run" id="apidoc.element.supervisor.run.run">
-        function <span class="apidocSignatureSpan">supervisor.</span>run
-        <span class="apidocSignatureSpan">(args)</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">function run(args) {
-    var arg, next, watch, ignore, pidFilePath, program, extensions, executor, poll_interval, debugFlag, debugBrkFlag, debugBrkFlagArg
-, harmony, inspect;
-    while (arg = args.shift()) {
-        if (arg === &#x22;--help&#x22; || arg === &#x22;-h&#x22; || arg === &#x22;-?&#x22;) {
-            return help();
-        } else if (arg === &#x22;--quiet&#x22; || arg === &#x22;-q&#x22;) {
-            debug = false;
-            log = function(){};
-        } else if (arg === &#x22;--harmony&#x22;) {
-            harmony = true;
-        } else if (arg === &#x22;--inspect&#x22;) {
-            inspect = true;
-        } else if (arg === &#x22;--harmony_default_parameters&#x22;) {
-            harmony_default_parameters = true;
-        } else if (arg === &#x22;--harmony_destructuring&#x22;) {
-            harmony_destructuring = true;
-        } else if (arg === &#x22;--verbose&#x22; || arg === &#x22;-V&#x22;) {
-            verbose = true;
-        } else if (arg === &#x22;--restart-verbose&#x22; || arg === &#x22;-RV&#x22;) {
-            restartVerbose = true;
-        } else if (arg === &#x22;--watch&#x22; || arg === &#x22;-w&#x22;) {
-            watch = args.shift();
-        } else if (arg == &#x22;--non-interactive&#x22; || arg === &#x22;-t&#x22;) {
-            interactive = false;
-        } else if (arg === &#x22;--ignore&#x22; || arg === &#x22;-i&#x22;) {
-            ignore = args.shift();
-        } else if (arg === &#x22;--save-pid&#x22; || arg === &#x22;-pid&#x22;) {
-            pidFilePath = args.shift();
-        } else if (arg === &#x22;--ignore-symlinks&#x22;) {
-            ignoreSymLinks = true;
-        } else if (arg === &#x22;--poll-interval&#x22; || arg === &#x22;-p&#x22;) {
-            poll_interval = parseInt(args.shift());
-        } else if (arg === &#x22;--extensions&#x22; || arg === &#x22;-e&#x22;) {
-            extensions = args.shift();
-        } else if (arg === &#x22;--exec&#x22; || arg === &#x22;-x&#x22;) {
-            executor = args.shift();
-        } else if (arg === &#x22;--no-restart-on&#x22; || arg === &#x22;-n&#x22;) {
-            noRestartOn = args.shift();
-        } else if (arg.indexOf(&#x22;--debug&#x22;) &#x3e; -1 &#x26;&#x26; arg.indexOf(&#x27;--debug-brk&#x27;) === -1) {
-            debugFlag = arg;
-        } else if (arg.indexOf(&#x27;--debug-brk&#x27;)&#x3e;=0) {
-            debugBrkFlag = true;
-            debugBrkFlagArg = arg;
-        } else if (arg === &#x22;--force-watch&#x22;) {
-            forceWatchFlag = true;
-        } else if (arg === &#x22;--instant-kill&#x22; || arg === &#x22;-k&#x22;) {
-            instantKillFlag = true;
-        } else if (arg === &#x22;--timestamp&#x22; || arg === &#x22;-s&#x22;) {
-            timestampFlag = true;
-        } else if (arg === &#x22;--&#x22;) {
-            program = args;
-            break;
-        } else if (arg[0] != &#x22;-&#x22; &#x26;&#x26; !args.length) {
-            // Assume last arg is the program
-            program = [arg];
-        }
-    }
-    if (!program) {
-        return help();
-    }
-    if (!watch) {
-        watch = &#x22;.&#x22;;
-    }
-    if (!poll_interval) {
-        poll_interval = 1000;
-    }
-
-    var programExt = program.join(&#x22; &#x22;).match(/.*\.(\S*)/);
-    programExt = programExt &#x26;&#x26; programExt[1];
-
-    if (!extensions) {
-        // If no extensions passed try to guess from the program
-        extensions = &#x22;node,js&#x22;;
-        if (programExt &#x26;&#x26; extensions.indexOf(programExt) == -1) {
-            // Support coffee and litcoffee extensions
-            if(programExt === &#x22;coffee&#x22; || programExt === &#x22;litcoffee&#x22;) {
-                extensions += &#x22;,coffee,litcoffee&#x22;;
-            } else {
-                extensions += &#x22;,&#x22; + programExt;
-            }
-        }
-    }
-    fileExtensionPattern = new RegExp(&#x22;^.*\.(&#x22; + extensions.replace(/,/g, &#x22;|&#x22;) + &#x22;)$&#x22;);
-
-    if (!executor) {
-        executor = (programExt === &#x22;coffee&#x22; || programExt === &#x22;litcoffee&#x22;) ? &#x22;coffee&#x22; : &#x22;node&#x22;;
-    }
-
-    if (debugFlag) {
-        program.unshift(debugFlag);
-    }
-    if (debugBrkFlag) {
-        program.unshift(debugBrkFlagArg);
-    }
-    if (harmony) {
-        program.unshift(&#x22;--harmony&#x22;);
-    }
-    if (inspect) {
-        program.unshift(&#x22;--inspect&#x22;);
-    }
-    if (harmony_default_parameters) {
-        program.unshift(&#x22;--harmony_default_parameters&#x22;);
-    }
-    if (harmony_destructuring) {
-        program.unshift(&#x22;--harmony_destructuring&#x22;);
-    }
-    if (executor === &#x22;coffee&#x22; &#x26;&#x26; (debugFlag || debugBrkFlag)) {
-        // coffee does not understand debug or debug-brk, make coffee pass opti ...</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+require(&#x22;./supervisor&#x22;).<span class="apidocCodeKeywordSpan">run</span>(args)
+...</pre></li>
     </ul>
 
 
